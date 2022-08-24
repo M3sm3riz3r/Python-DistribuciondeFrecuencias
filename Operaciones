@@ -18,11 +18,45 @@ class Distribucion_Frecuencia:
         self.__datos_agrupados = datos_agrupados
         self.valores_calculo()
 
+    def valores_calculo(self) -> None:
+        '''Calculos iniciales
+            Minimo, Maximo, Rango, Total, Inetrvalo, Amplitud
+        '''
+        self.__minimo = min(self.__datos_agrupados)
+        self.__maximo = max(self.__datos_agrupados)
+        self.__rango = self.__maximo - self.__minimo
+        self.__n = len(self.__datos_agrupados)
+        self.__intervalo = round(sqrt(self.__n))
+        self.__amplitud = self.__rango / self.__intervalo
+
+    def calculo_x(self, valor: float, amplitud: float) -> str:
+        '''Valores de variable X'''
+        return f"[{valor} - {valor + amplitud})"
+
+    def calculo_xi(self, valor: float, amplitud: float) -> float:
+        '''Marca de clase Xi'''
+        return (valor + (valor + amplitud)) / 2
+
+    def calculo_fi(self, rango_ini: float, rango_final: float, coleccion_numeros: list) -> int:
+        '''Frecuencia absoluta'''
+        maximo = max(coleccion_numeros)
+        contador = 0
+        for numero in coleccion_numeros:
+            if (maximo == numero and (rango_ini <= numero <= rango_final)):
+                contador += 1
+            elif(rango_ini <= numero < rango_final):
+                contador += 1
+        return contador
+
+    def calculo_fr(self, fi: float, n: int):
+        '''Frecuencia relativa'''
+        return fi / n
+    
     def calculo(self) -> dict:
         """Tablas en que se dispone las modalidades de la variable retorna tabla : 
         Valor , Marca de clase, Frecuencia absoluta,
         Frecuencia absoluta acumulada, Frecuencia relativa, 
-        Frecuencia reltavita acumulada
+        Frecuencia relativa acumulada
         Return : {
             "valor_x": lista_x,
             "xi": lista_xi,
@@ -66,40 +100,6 @@ class Distribucion_Frecuencia:
             "fr": lista_fr,
             "Fr": lista_Fr
         }
-
-    def valores_calculo(self) -> None:
-        '''Calculos iniciales
-            Minimo, Maximo, Rango, Total, Inetrvalo, Amplitud
-        '''
-        self.__minimo = min(self.__datos_agrupados)
-        self.__maximo = max(self.__datos_agrupados)
-        self.__rango = self.__maximo-self.__minimo
-        self.__n = len(self.__datos_agrupados)
-        self.__intervalo = round(sqrt(self.__n))
-        self.__amplitud = self.__rango / self.__intervalo
-
-    def calculo_x(self, valor: float, amplitud: float) -> str:
-        '''Valores de variable X'''
-        return f"[{valor} - {valor + amplitud})"
-
-    def calculo_xi(self, valor: float, amplitud: float) -> float:
-        '''Marca de clase Xi'''
-        return (valor + (valor + amplitud)) / 2
-
-    def calculo_fi(self, rango_ini: float, rango_final: float, coleccion_numeros: list) -> int:
-        '''Frecuencia absoluta'''
-        maximo = max(coleccion_numeros)
-        contador = 0
-        for numero in coleccion_numeros:
-            if (maximo == numero and (rango_ini <= numero <= rango_final)):
-                contador += 1
-            elif(rango_ini <= numero < rango_final):
-                contador += 1
-        return contador
-
-    def calculo_fr(self, fi: float, n: int):
-        '''Frecuencia relativa'''
-        return fi / n
 
     def mostrar_tablas(self, tablas_df: dict) -> None:
         """Imprime en pantalla la tabla de distribuciones de frecuencias"""
