@@ -79,7 +79,7 @@ class Distribucion_Frecuencia:
         self.__amplitud = self.__rango / self.__intervalo
 
     def calculo_x(self, valor: float, amplitud: float) -> str:
-        '''Valor de variable X'''
+        '''Valores de variable X'''
         return f"[{valor} - {valor + amplitud})"
 
     def calculo_xi(self, valor: float, amplitud: float) -> float:
